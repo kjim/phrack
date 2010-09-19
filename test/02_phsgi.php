@@ -38,7 +38,7 @@ function testPhsgiApplicationExample($t)
 {
     function app(&$env)
     {
-        return array(200, array(array('Content-Type', 'text/plain')), array('Hello World!'));
+        return array('200 OK', array(array('Content-Type', 'text/plain')), array('Hello World!'));
     }
 
     $app = 'app';
@@ -46,7 +46,7 @@ function testPhsgiApplicationExample($t)
     $env =& makeMockEnv();
     list($status, $headers, $body) = call_user_func_array($app, array(&$env));
     $t->ok(true, 'phsgi application is callable object');
-    $t->is($status, 200, 'status is 200');
+    $t->is($status, '200 OK', 'status is 200 OK');
     $t->is($headers, array(array('Content-Type', 'text/plain')), "headers is [('Content-Type', 'text/plain')]");
     $t->is($body, array('Hello World!'), "body is ('Hello World!')");
 
@@ -56,7 +56,7 @@ function testPhsgiApplicationExample($t)
         foreach ($env as $k => $v) {
             $body[] = "$k => " . (is_array($v) ? '(' . implode(', ', $v) . ')' : $v);
         }
-        return array(200, array(array('Content-Type', 'text/plain')), $body);
+        return array('200 OK', array(array('Content-Type', 'text/plain')), $body);
     }
 
     $app = 'anotherapp';
@@ -67,7 +67,7 @@ function testPhsgiApplicationExample($t)
         'phsgi.version'    => array(1, 0),
         );
     list($status, $headers, $body) = call_user_func_array($app, array(&$env));
-    $t->is($status, 200, 'status is 200');
+    $t->is($status, '200 OK', 'status is 200 OK');
     $t->is($headers, array(array('Content-Type', 'text/plain')), "headers is [('Content-Type', 'text/plain')]");
     $t->is($body[0], 'REQUEST_METHOD => GET',       '[0] => REQUEST_METHOD => GET');
     $t->is($body[1], 'SERVER_PROTOCOL => HTTP/1.1', '[1] => SERVER_PROTOCOL => HTTP/1.1');
@@ -101,7 +101,7 @@ function testPhsgiApplicationExample($t)
 
     $env = makeMockEnv();
     list($status, $headers, $body) = call_user_func_array($app, array(&$env));
-    $t->is($status, 200, 'status is 200');
+    $t->is($status, '200 OK', 'status is 200 OK');
     $t->is($headers, array(array('Content-Type', 'text/plain'), array('X-TEST-PHSGI-MIDDLEWARE', 'Middleware')),
            "headers is [('Content-Type', 'text/plain'), ('X-TEST-PHSGI-MIDDLEWARE', 'Middleware')]");
     $t->is($body, array('middleware_begin', 'Hello World!', 'middleware_end'),
