@@ -44,23 +44,19 @@ function testContentLength($t)
 $t->append('testContentLength');
 
 
-$headersSample = array(
-    array('Content-Type', 'text/plain'),
-    array('Content-Length', 11),
-    );
-
 function testHeaderIter($t)
 {
-    global $headersSample;
+    $headers = array(array('Foo', 'bar'), array('Bar', 'baz'));
+
     $k = '423104f2f955484d83ca555705aa087c';
     $GLOBALS[$k] = array();
     function callback($key, $value)
     {
         $GLOBALS['423104f2f955484d83ca555705aa087c'][] = "$key = $value";
     }
-    Phack_Util::headerIter($headersSample, 'callback');
+    Phack_Util::headerIter($headers, 'callback');
 
-    $t->is_deeply($GLOBALS[$k], array('Content-Type = text/plain', 'Content-Length = 11'),
+    $t->is_deeply($GLOBALS[$k], array('Foo = bar', 'Bar = baz'),
                   'headerIter()');
     unset($GLOBALS[$k]);
 }
@@ -68,12 +64,12 @@ $t->append('testHeaderIter');
 
 function testHeaderGet($t)
 {
-    global $headersSample;
-    $cl = Phack_Util::headerGet($headersSample, 'Content-Length');
-    $t->is($cl, array(11), 'headerGet()');
+    $headers = array(array('Foo', 'bar'));
+    $cl = Phack_Util::headerGet($headers, 'Foo');
+    $t->is($cl, array('bar'), 'headerGet()');
 
-    $cl = Phack_Util::headerGet($headersSample, 'CONTENT-LENGTH');
-    $t->is($cl, array(11), 'headerGet() is ignore case');
+    $cl = Phack_Util::headerGet($headers, 'foo');
+    $t->is($cl, array('bar'), 'headerGet() is case-insensitive');
 }
 $t->append('testHeaderGet');
 
@@ -95,34 +91,30 @@ $t->append('testHeaderSet');
 
 function testHeaderPush($t)
 {
-    global $headersSample;
-
-    $headers = $headersSample;
-    Phack_Util::headerPush($headers, 'Location', 'http://example.com/foo/bar');
-    $locations = Phack_Util::headerGet($headers, 'Location');
-    $t->is_deeply($locations, array('http://example.com/foo/bar'), 'headerPush()');
+    $headers = array(array('Foo', 'bar'));
+    Phack_Util::headerPush($headers, 'Bar', 'baz');
+    Phack_Util::headerPush($headers, 'Bar', 'qux');
+    $locations = Phack_Util::headerGet($headers, 'Bar');
+    $t->is_deeply($locations, array('baz', 'qux'), 'headerPush()');
 }
 $t->append('testHeaderPush');
 
 function testHeaderExists($t)
 {
-    global $headersSample;
-
-    $exists = Phack_Util::headerExists($headersSample, 'Content-Type');
+    $headers = array(array('Foo', 'bar'));
+    $exists = Phack_Util::headerExists($headers, 'Foo');
     $t->ok($exists, 'headerExists() returns true value');
 
-    $exists = Phack_Util::headerExists($headersSample, 'Location');
+    $exists = Phack_Util::headerExists($headers, 'Bar');
     $t->ok(!$exists, 'headerExists() returns false value');
 }
 $t->append('testHeaderExists');
 
 function testHeaderRemove($t)
 {
-    global $headersSample;
-
-    $headers = $headersSample;
-    Phack_Util::headerRemove($headers, 'Content-Length');
-    $t->is_deeply($headers, array(array('Content-Type', 'text/plain')), 'headerRemove()');
+    $headers = array(array('Foo', 'bar'));
+    Phack_Util::headerRemove($headers, 'Foo');
+    $t->is_deeply($headers, array(), 'headerRemove()');
 }
 $t->append('testHeaderRemove');
 
