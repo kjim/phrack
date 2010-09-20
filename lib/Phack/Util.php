@@ -45,9 +45,26 @@ class Phack_Util
         505 => 'HTTP Version Not Supported',
         );
 
-    static public function getStatusTextFor($status)
+    static public function statusText($status)
     {
         return self::$STATUS_TEXTS[$status];
+    }
+
+    static public function contentLength($body)
+    {
+        if ($body === null) {
+            return;
+        }
+
+        if (is_array($body)) {
+            $cl = 0;
+            foreach ($body as $chunk) {
+                $cl += mb_strlen($chunk);
+            }
+            return $cl;
+        }
+
+        return;
     }
 
     static public function callApp($app, &$env)
