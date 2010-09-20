@@ -34,7 +34,7 @@ class Phack_Handler_Apache2 implements Phack_Handler
         try {
             $this->fixupPath($env);
 
-            $res = call_user_func_array($app, array(&$env));
+            $res = Phack_Util::callApp($app, $env);
 
             if (is_array($res)) {
                 $this->handleResponse($res, $env);

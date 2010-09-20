@@ -49,4 +49,9 @@ class Phack_Util
     {
         return self::$STATUS_TEXTS[$status];
     }
+
+    static public function callApp($app, &$env)
+    {
+        return call_user_func_array($app, array(&$env));
+    }
 }
