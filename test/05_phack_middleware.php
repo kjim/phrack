@@ -24,7 +24,7 @@ function testMiddlewareImplementation($t)
 
         static public function wrap($app)
         {
-            return $wrapapp = parent::wrap('FooMiddleware', $app);
+            return parent::wrap('FooMiddleware', $app);
         }
     }
 
