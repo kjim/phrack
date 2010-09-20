@@ -28,6 +28,7 @@ class ErrorMiddleware
             call_user_func_array($this->app, array(&$env));
         }
         catch (Exception $e) {
+            fwrite($env['phsgi.errors'], $e->getMessage() . "\n");
             return array('500 Internal Server Error',
                          array(array('Content-Type', 'text/plain')),
                          array('500 Internal Server Error: ' . $e->getMessage()));
