@@ -71,4 +71,74 @@ class Phack_Util
     {
         return call_user_func_array($app, array(&$env));
     }
+
+    static public function headerIter(&$headers, $callback)
+    {
+        foreach ($headers as &$header) {
+            call_user_func_array($callback, $header);
+        }
+    }
+
+    static public function headerGet(&$headers, $key)
+    {
+        $key = strtolower($key);
+
+        $vals = array();
+        foreach ($headers as $header) {
+            if (strtolower($header[0]) === $key) {
+                $vals[] = $header[1];
+            }
+        }
+        return $vals;
+    }
+
+    static public function headerSet(&$headers, $key, $value)
+    {
+        $k = strtolower($key);
+
+        $newHeaders = array();
+        $set = false;
+        foreach ($headers as $header) {
+            if (!$set && strtolower($header[0]) === $k) {
+                $header[1] = $value;
+                $set = true;
+            }
+            $newHeaders[] = $header;
+        }
+
+        if (!$set) {
+            $newHeaders[] = array($key, $value);
+        }
+        $headers = $newHeaders;
+    }
+
+    static public function headerPush(&$headers, $key, $value)
+    {
+        $headers[] = array($key, $value);
+    }
+
+    static public function headerExists(&$headers, $key)
+    {
+        $key = strtolower($key);
+        foreach ($headers as $header) {
+            if (strtolower($header[0]) === $key) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static public function headerRemove(&$headers, $key)
+    {
+        $key = strtolower($key);
+
+        $newHeaders = array();
+        foreach ($headers as $header) {
+            if (strtolower($header[0]) !== $key) {
+                $newHeaders[] = $header;
+            }
+        }
+
+        $headers = $newHeaders;
+    }
 }
