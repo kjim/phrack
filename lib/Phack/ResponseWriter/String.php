@@ -1,7 +1,7 @@
 <?php
 require_once('Phack/ResponseWriter.php');
 
-class Phack_ResponseWriter_String implements Phack_ResponseWriter
+class Phack_ResponseWriter_String extends Phack_ResponseWriter
 {
     protected $h = array();
     protected $b = '';
@@ -11,9 +11,15 @@ class Phack_ResponseWriter_String implements Phack_ResponseWriter
         $this->h[] = $string;
     }
 
-    public function writeBody($string)
+    public function writeBody($contents)
     {
-        $this->b .= $string;
+        if (is_resource($contents)) {
+            $this->b .= fread($contents, 8192);
+            fclose($contents);
+        }
+        else {
+            $this->b .= $contents;
+        }
     }
 
     public function header()

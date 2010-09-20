@@ -52,6 +52,7 @@ class Phack_Handler_Apache2 implements Phack_Handler
 
     protected function close(&$env)
     {
+        $this->writer->close();
         fclose($env['phsgi.input']);
         fclose($env['phsgi.errors']);
     }
@@ -65,8 +66,17 @@ class Phack_Handler_Apache2 implements Phack_Handler
         foreach ($headers as $h) {
             $writer->writeHeader($h[0].': '.$h[1]);
         }
-        foreach ($body as $e) {
-            $writer->writeBody($e);
+
+        if (is_array($body) || $body instanceof Traversable) {
+            foreach ($body as $e) {
+                $writer->writeBody($e);
+            }
+        }
+        else if (is_resource($body)) {
+            $writer->writeBody($body);
+        }
+        else {
+            throw new Exception("Bad body " . (is_object($body) ? get_class($body) : $body));
         }
     }
 }

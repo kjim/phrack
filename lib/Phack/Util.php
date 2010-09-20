@@ -105,6 +105,13 @@ class Phack_Util
         $headers = $newHeaders;
     }
 
+    static public function fcopy($fpwrite, $fpread, $length = 8192)
+    {
+        while ( !feof($fpread) ) {
+            fwrite($fpwrite, fread($fpread, $length));
+        }
+    }
+
     static public function responseCb($res, $cb)
     {
         if (is_array($res)) {

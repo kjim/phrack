@@ -22,12 +22,28 @@ function testRunSimpleApp($lime)
     $writer = newWriter();
     $handler = new Phack_Handler_Apache2($writer);
     $handler->run($app);
-    $senthead = $writer->header();
-    $sentbody = $writer->body();
 
-    $lime->is($senthead, "HTTP/1.0 200 OK\nContent-Type: text/plain");
-    $lime->is($sentbody, 'Hello World!', 'sent body to client');
+    $lime->is($writer->header(), "HTTP/1.0 200 OK\nContent-Type: text/plain");
+    $lime->is($writer->body(), 'Hello World!', 'sent body to client');
 }
 $t->append('testRunSimpleApp');
+
+function testResponseBodyIsResource($t)
+{
+    function app(&$env)
+    {
+        $fpread = fopen(dirname(__FILE__).'/static/404.html', 'rb');
+        return array('200 OK', array(), $fpread);
+    }
+
+    $app = 'app';
+
+    $writer = newWriter();
+    $handler = new Phack_Handler_Apache2($writer);
+    $handler->run($app);
+
+    $t->is($writer->body(), file_get_contents(dirname(__FILE__).'/static/404.html'));
+}
+$t->append('testResponseBodyIsResource');
 
 $t->execute();

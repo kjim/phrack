@@ -1,7 +1,10 @@
 <?php
 
-interface Phack_ResponseWriter
+abstract class Phack_ResponseWriter
 {
-    public function writeHeader($string, $replace = true);
-    public function writeBody($string);
+    abstract public function writeHeader($string, $replace = true);
+    abstract function writeBody($string);
+
+    public function close()
+    { }
 }
