@@ -72,6 +72,11 @@ class Phack_Util
         return call_user_func_array($app, array(&$env));
     }
 
+    static public function headers(&$headers)
+    {
+        return new Phack_Util_Headers($headers);
+    }
+
     static public function headerIter(&$headers, $callback)
     {
         foreach ($headers as &$header) {
@@ -140,5 +145,71 @@ class Phack_Util
         }
 
         $headers = $newHeaders;
+    }
+}
+
+class Phack_Util_Prototype
+{
+    protected $callbacks;
+
+    public function __construct(array $callbacks)
+    {
+        $this->callbacks = $callbacks;
+    }
+
+    public function __call($attr, $args)
+    {
+        if (isset($this->callbacks[$attr]) && is_callable($this->callbacks[$attr])) {
+            call_user_func_array($this->callbacks[$attr], $args);
+        }
+        else {
+            throw new Exception(
+                "Can't locate object method \"$attr\" via package \"Phack_Util_Prototype\"");
+        }
+    }
+}
+
+class Phack_Util_Headers
+{
+    protected $headers;
+
+    public function __construct($headers)
+    {
+        $this->headers = $headers;
+    }
+
+    public function iter($callback)
+    {
+        return Phack_Util::headerIter($this->headers, $callback);
+    }
+
+    public function get($key)
+    {
+        return Phack_Util::headerGet($this->headers, $key);
+    }
+
+    public function set($key, $value)
+    {
+        return Phack_Util::headerSet($this->headers, $key, $value);
+    }
+
+    public function push($key, $value)
+    {
+        return Phack_Util::headerPush($this->headers, $key, $value);
+    }
+
+    public function exists($key)
+    {
+        return Phack_Util::headerExists($this->headers, $key);
+    }
+
+    public function remove($key)
+    {
+        return Phack_Util::headerRemove($this->headers, $key);
+    }
+
+    public function headers()
+    {
+        return $this->headers;
     }
 }
