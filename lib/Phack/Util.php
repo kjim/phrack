@@ -112,17 +112,17 @@ class Phack_Util
         }
     }
 
-    static public function responseCb($res, $cb)
+    static public function responseCb(&$res, $cb, array $args = array())
     {
         if (is_array($res)) {
-            self::_responseCbBodyFilter($cb, $res);
+            self::_responseCbBodyFilter($cb, $res, $args);
         }
         return $res;
     }
 
-    static private function _responseCbBodyFilter($cb, &$res)
+    static private function _responseCbBodyFilter($cb, &$res, &$args)
     {
-        call_user_func_array($cb, array(&$res));
+        call_user_func_array($cb, array(&$res, &$args));
     }
 }
 
