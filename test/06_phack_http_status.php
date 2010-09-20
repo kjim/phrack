@@ -4,17 +4,6 @@ require_once('Phack/HTTP/Status.php');
 
 $t = new LimeTester();
 
-// helper functions
-function call_static($class, $method, array $args = array())
-{
-    return call(array($class, $method), $args);
-}
-
-function call($callback, array $args = array())
-{
-    return call_user_func_array($callback, $args);
-}
-
 function testStatusMessage($t)
 {
     $func = 'Phack_HTTP_Status::statusMessage';

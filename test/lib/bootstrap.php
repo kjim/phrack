@@ -51,3 +51,14 @@ function is_except($t, $except, $callable, array $arguments=array(), $msg=null)
         $t->is(get_class($e), $except, "raised $except ok: $msg");
     }
 }
+
+// helper functions
+function call_static($class, $method, array $args = array())
+{
+    return call(array($class, $method), $args);
+}
+
+function call($callback, array $args = array())
+{
+    return call_user_func_array($callback, $args);
+}
