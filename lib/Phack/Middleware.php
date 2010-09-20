@@ -4,8 +4,10 @@ require_once('Phack/Util.php');
 
 abstract class Phack_Middleware extends Phack_Component
 {
-    static protected function wrap($class, $app, array $args = array())
+    static protected function wrap(/* $class, array $args... */)
     {
+        list($class, $args) = func_get_args();
+        $app = array_shift($args);
         $self = new $class($app, $args);
         return $self->toApp();
     }

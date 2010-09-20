@@ -22,9 +22,13 @@ function testMiddlewareImplementation($t)
             return $res;
         }
 
-        static public function wrap($app)
+        /**
+         * @see Phack_Middleware::wrap
+         */
+        static public function wrap()
         {
-            return parent::wrap('FooMiddleware', $app);
+            $args =& func_get_args();
+            return parent::wrap(__CLASS__, $args);
         }
     }
 
