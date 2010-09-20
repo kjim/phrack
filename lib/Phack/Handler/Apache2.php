@@ -24,23 +24,37 @@ class Phack_Handler_Apache2 implements Phack_Handler
             array(
                 'phsgi.version'        => array(1, 0),
                 'phsgi.url_scheme'     => (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 'https' : 'http'),
-                'phsgi.input'          => STDIN,
-                'phsgi.errors'         => STDERR,
+                'phsgi.input'          => fopen('php://stdin', 'r'),
+                'phsgi.errors'         => fopen('php://stderr', 'w'),
                 'phsgi.multithread'    => false,
                 'phsgi.multiprocess'   => true,
                 'phsgi.run_once'       => true,
                 ));
 
-        $this->fixupPath($env);
+        try {
+            $this->fixupPath($env);
 
-        $res = call_user_func_array($app, array(&$env));
+            $res = call_user_func_array($app, array(&$env));
 
-        if (is_array($res) || (is_object($res) && $res instanceof Traversable)) {
-            $this->handleResponse($res, $env);
+            if (is_array($res)) {
+                $this->handleResponse($res, $env);
+            }
+            else {
+                throw new Exception("Bad response " . (is_object($res) ? get_class($res) : $res));
+            }
+
+            $this->close($env);
         }
-        else {
-            throw new Exception("Bad response " . (is_object($res) ? get_class($res) : $res));
+        catch (Exception $e) {
+            $this->close($env);
+            throw $e;
         }
+    }
+
+    protected function close(&$env)
+    {
+        fclose($env['phsgi.input']);
+        fclose($env['phsgi.errors']);
     }
 
     protected function handleResponse(&$res, &$env)
