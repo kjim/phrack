@@ -4,6 +4,17 @@ require_once('Phack/Util.php');
 
 class Phack_Handler_Apache2 implements Phack_Handler
 {
+    protected $writer;
+
+    public function __construct($writer=null)
+    {
+        if ($writer === null) {
+            require_once('Phack/ResponseWriter/PHP.php');
+            $writer = new Phack_ResponseWriter_PHP();
+        }
+        $this->writer = $writer;
+    }
+
     public function run($app)
     {
         $env = array_merge(
@@ -49,14 +60,13 @@ class Phack_Handler_Apache2 implements Phack_Handler
     {
         list($status, $headers, $body) = $res;
 
-        header($env['SERVER_PROTOCOL'] . ' ' . $status);
-        foreach ($headers as $header) {
-            list($k, $v) = $header;
-            header($k.': '.$v);
+        $writer = $this->writer;
+        $writer->writeHeader($env['SERVER_PROTOCOL'] . ' ' . $status);
+        foreach ($headers as $h) {
+            $writer->writeHeader($h[0].': '.$h[1]);
         }
         foreach ($body as $e) {
-            echo($e);
+            $writer->writeBody($e);
         }
     }
-
 }
