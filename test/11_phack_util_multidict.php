@@ -61,4 +61,19 @@ function testArrayAccessAPI($t)
 }
 $t->append('testArrayAccessAPI');
 
+function testMergeMixedDict($t)
+{
+    $dict = new Phack_Util_MultiDict();
+    $dict->mergeMixedDict(
+        array(
+            'foo' => array('a', 'b'),
+            'bar' => 'baz',
+            'baz' => 33));
+
+    $t->is_deeply($dict->getAll('foo'), array('a', 'b'));
+    $t->is_deeply($dict->getAll('bar'), array('baz'));
+    $t->is_deeply($dict->getAll('baz'), array(33));
+}
+$t->append('testMergeMixedDict');
+
 $t->execute();

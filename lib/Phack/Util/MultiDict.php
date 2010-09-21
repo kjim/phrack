@@ -4,10 +4,10 @@ class Phack_Util_MultiDict implements ArrayAccess
 {
     protected $data;
 
-    public function __construct(array $data = array())
+    public function __construct(array $multi = array())
     {
         $this->clear();
-        $this->merge($data);
+        $this->merge($multi);
     }
 
     public function get($key, $default = null)
@@ -29,20 +29,34 @@ class Phack_Util_MultiDict implements ArrayAccess
         return array_keys($this->data);
     }
 
-    public function add($key, $value)
+    public function add(/* $key, $value[, $value ...] */)
+    {
+        $values = func_get_args();
+        $this->addAll(array_shift($values), $values);
+    }
+
+    public function addAll($key, $values)
     {
         if (isset($this->data[$key])) {
-            $this->data[$key][] = $value;
+            array_splice($this->data[$key], count($this->data[$key]), count($values), $values);
         }
         else {
-            $this->data[$key] = array($value);
+            $this->data[$key] = $values;
         }
     }
 
-    public function merge(array $data)
+    public function merge(array $multi)
     {
-        foreach ($data as $entry) {
+        foreach ($multi as $entry) {
             $this->add($entry[0], $entry[1]);
+        }
+    }
+
+    public function mergeMixedDict(array $dict)
+    {
+        $callback = array($this, 'addAll');
+        foreach ($dict as $key => $value) {
+            call_user_func_array($callback, array($key, is_array($value) ? $value : array($value)));
         }
     }
 
