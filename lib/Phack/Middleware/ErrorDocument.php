@@ -50,7 +50,7 @@ class Phack_Middleware_ErrorDocument extends Phack_Middleware
         }
     }
 
-    static public function wrap($app)
+    static public function wrap()
     {
         $args =& func_get_args();
         return parent::wrap(__CLASS__, $args);

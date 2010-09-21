@@ -21,8 +21,18 @@ class Phack_Util
             }
             return $cl;
         }
+        else if (self::isFileHandle($body)) {
+            $stat = fstat($body);
+            $size = $stat['size'];
+            return $size - ftell($body);
+        }
 
         return;
+    }
+
+    static public function isFileHandle($resource)
+    {
+        return is_resource($resource) && in_array(get_resource_type($resource), array('stream', 'file'));
     }
 
     static public function callApp($app, &$env)
@@ -151,9 +161,9 @@ class Phack_Util_Headers
 {
     protected $headers;
 
-    public function __construct($headers)
+    public function __construct(&$headers)
     {
-        $this->headers = $headers;
+        $this->headers =& $headers;
     }
 
     public function iter($callback)

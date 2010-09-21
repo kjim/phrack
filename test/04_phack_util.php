@@ -38,8 +38,13 @@ $t->append('testCallApp');
 
 function testContentLength($t)
 {
-    $cl = Phack_Util::contentLength(array('abcdefg', 'h', 'ij'));
-    $t->is($cl, 10, 'contentLenght()');
+    $func = array('Phack_Util', 'contentLength');
+    $t->is(call($func, array(array('abcdefg', 'h', 'ij'))), 10, 'contentLenght([])');
+
+    $file = dirname(__FILE__).'/static/404.html';
+    $fh = fopen($file, 'rb');
+    $t->is(call($func, array($fh)), filesize($file), 'contentLenght(file_handle)');
+    fclose($fh);
 }
 $t->append('testContentLength');
 

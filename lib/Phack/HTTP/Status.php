@@ -68,4 +68,9 @@ class Phack_HTTP_Status
     static public function isError      ($status) { return $status >= 400 && $status < 600; }
     static public function isClientError($status) { return $status >= 400 && $status < 500; }
     static public function isServerError($status) { return $status >= 500 && $status < 600; }
+
+    static public function hasNoEntityBody($status)
+    {
+        return $status < 200 || $status === 204 || $status === 304;
+    }
 }
