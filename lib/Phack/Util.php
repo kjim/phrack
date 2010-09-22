@@ -5,7 +5,7 @@ class Phack_Util
 {
     static public function statusText($status)
     {
-        return Phack_HTTP_Status::statusMessage($status);
+        return $status . ' ' . Phack_HTTP_Status::statusMessage($status);
     }
 
     static public function contentLength($body)

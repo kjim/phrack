@@ -126,7 +126,7 @@ class Phack_Request
     public function getURI()
     {
         $base = $this->_getBaseURI();
-        $path = urlencode($this->getenv('PATH_INFO', ''));
+        $path = rawurlencode($this->getenv('PATH_INFO', ''));
         if ($this->getenv('QUERY_STRING', '') !== '') {
             $path .= '?' . $this->getenv('QUERY_STRING');
         }
@@ -146,6 +146,12 @@ class Phack_Request
             $this->getenv('SCRIPT_NAME', '/');
 
         return $uri;
+    }
+
+    public function newResponse($status = 200, array $headers = array(), $content = array())
+    {
+        require_once('Phack/Response.php');
+        return new Phack_Response($status, $headers, $content);
     }
 
     /* The following methods are derived from code of the Symfony2 (preview3) */
