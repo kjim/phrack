@@ -123,6 +123,31 @@ class Phack_Request
         return $this->environ['phack.request.upload'];
     }
 
+    public function getURI()
+    {
+        $base = $this->_getBaseURI();
+        $path = urlencode($this->getenv('PATH_INFO', ''));
+        if ($this->getenv('QUERY_STRING', '') !== '') {
+            $path .= '?' . $this->getenv('QUERY_STRING');
+        }
+
+        return rtrim($base . $path, '/');
+    }
+
+    private function _getBaseURI()
+    {
+        $uri = $this->getenv('phsgi.url_scheme', 'http') .
+            '://' .
+            $this->getenv('HTTP_HOST',
+                          $this->getenv('SERVER_NAME', '') .
+                          (in_array($this->getenv('SERVER_PORT', 80), array(80, 443))
+                           ? '' : ':' . $this->getenv('SERVER_PORT', 80))
+                ) .
+            $this->getenv('SCRIPT_NAME', '/');
+
+        return $uri;
+    }
+
     /* The following methods are derived from code of the Symfony2 (preview3) */
 
     /**

@@ -4,17 +4,35 @@ require_once('Phack/Request.php');
 
 $t = new LimeTester();
 
-function testSetSuperGlobalVariables($t)
+function testNewRequest($t)
 {
     $_GET    = array();
     $_POST   = array();
     $_FILES  = array();
     $_COOKIE = array();
 
-    $environ = array();
+    $environ = array(
+        'REQUEST_METHOD'    => 'GET',
+        'SERVER_PROTOCOL'   => 'HTTP/1.1',
+        'SERVER_PORT'       => 80,
+        'SERVER_NAME'       => 'example.com',
+        'SCRIPT_NAME'       => '/foo',
+        'REMOTE_ADDR'       => '127.0.0.1',
+        'phsgi.version'     => array(1, 0),
+        'phsgi.input'       => null,
+        'phsgi.errors'      => null,
+        'phsgi.url_scheme'  => 'http',
+        );
     $req = new Phack_Request($environ);
+
+    $t->is($req->getAddress(), '127.0.0.1', 'getAddress()');
+    $t->is($req->getMethod(), 'GET', 'getMethod()');
+    $t->is($req->getProtocol(), 'HTTP/1.1', 'getProtocol()');
+    $t->is($req->getUri(), 'http://example.com/foo', 'getRequestUri()');
+    $t->is($req->getPort(), 80, 'getPort()');
+    $t->is($req->getScheme(), 'http', 'getScheme()');
 }
-$t->append('testSetSuperGlobalVariables');
+$t->append('testNewRequest');
 
 function testConvertFileInformation($t)
 {
