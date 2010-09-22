@@ -20,7 +20,7 @@ function testBasicUsage($t)
     $t->is_deeply($dict->getAll('foo'), array('a', 'b'));
     $t->is_deeply($dict->getAll('baz'), array(33));
 
-    $t->is_deeply($dict->flatten(), $data);
+    $t->is_deeply($dict->items(), $data);
 
     $dict->add('foo', 'c');
     $t->is($dict->get('foo'), 'c');

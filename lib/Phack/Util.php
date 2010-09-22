@@ -134,6 +134,54 @@ class Phack_Util
     {
         call_user_func_array($cb, array(&$res, &$args));
     }
+
+    /* The following methods are derived from code of the Symfony2 (preview3) */
+
+    /**
+     * Fixes a malformed PHP $_FILES array.
+     *
+     * PHP has a bug that the format of the $_FILES array differs, depending on
+     * whether the uploaded file fields had normal field names or array-like
+     * field names ("normal" vs. "parent[child]").
+     *
+     * This method fixes the array to look like the "normal" $_FILES array.
+     *
+     * It's safe to pass an already converted array, in which case this method
+     * just returns the original array unmodified.
+     *
+     * @param  array $data
+     * @return array
+     */
+    static public function fixPhpFilesArray($data)
+    {
+        if (!is_array($data)) {
+            return $data;
+        }    
+
+        $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
+        $keys = array_keys($data);
+        sort($keys);
+
+        if ($fileKeys != $keys || !isset($data['name']) || !is_array($data['name'])) {
+            return $data;
+        }
+
+        $files = $data;
+        foreach ($fileKeys as $k) {
+            unset($files[$k]);
+        }
+        foreach (array_keys($data['name']) as $key) {
+            $files[$key] = self::fixPhpFilesArray(array(
+                'error'    => $data['error'][$key],
+                'name'     => $data['name'][$key],
+                'type'     => $data['type'][$key],
+                'tmp_name' => $data['tmp_name'][$key],
+                'size'     => $data['size'][$key],
+            ));
+        }
+
+        return $files;
+    }
 }
 
 class Phack_Util_Prototype

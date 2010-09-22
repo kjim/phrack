@@ -29,6 +29,15 @@ class Phack_Util_MultiDict implements ArrayAccess
         return array_keys($this->data);
     }
 
+    public function values()
+    {
+        $values = array();
+        foreach ($this->data as $_ => $entries) {
+            array_splice($values, count($values), count($entries), $entries);
+        }
+        return $values;
+    }
+
     public function add(/* $key, $value[, $value ...] */)
     {
         $values = func_get_args();
@@ -70,7 +79,7 @@ class Phack_Util_MultiDict implements ArrayAccess
         $this->data = array();
     }
 
-    public function flatten()
+    public function items()
     {
         $pairs = array();
         foreach ($this->data as $key => $values) {
@@ -83,7 +92,7 @@ class Phack_Util_MultiDict implements ArrayAccess
 
     public function __toString()
     {
-        return print_r($this->flatten(), true);
+        return print_r($this->items(), true);
     }
 
     protected function getvalues($key, $default = array())
