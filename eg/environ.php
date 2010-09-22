@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__).'/bootstrap.php');
-require_once('Phack/Handler/Apache2.php');
+require_once('Phrack/Handler/Apache2.php');
 
 function environ(&$env)
 {
@@ -13,5 +13,5 @@ function environ(&$env)
 
 $app = 'environ';
 
-$handler = new Phack_Handler_Apache2();
+$handler = new Phrack_Handler_Apache2();
 $handler->run($app);

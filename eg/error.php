@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/bootstrap.php');
-require_once('Phack/Handler/Apache2.php');
-require_once('Phack/Util.php');
+require_once('Phrack/Handler/Apache2.php');
+require_once('Phrack/Util.php');
 
 function error(&$env)
 {
@@ -26,7 +26,7 @@ class ErrorMiddleware
     public function _call(&$env)
     {
         try {
-            Phack_Util::callApp($this->app, $env);
+            Phrack_Util::callApp($this->app, $env);
         }
         catch (Exception $e) {
             fwrite($env['phsgi.errors'], $e->getMessage() . "\n");
@@ -40,5 +40,5 @@ class ErrorMiddleware
 $app = 'error';
 $app = ErrorMiddleware::wrap($app);
 
-$handler = new Phack_Handler_Apache2();
+$handler = new Phrack_Handler_Apache2();
 $handler->run($app);

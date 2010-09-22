@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__).'/bootstrap.php');
-require_once('Phack/Handler/Apache2.php');
+require_once('Phrack/Handler/Apache2.php');
 
 function hello(&$env)
 {
@@ -11,5 +11,5 @@ function hello(&$env)
                  array('Hello World'));
 }
 
-$handler = new Phack_Handler_Apache2();
+$handler = new Phrack_Handler_Apache2();
 $handler->run('hello');
