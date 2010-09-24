@@ -18,8 +18,8 @@ abstract class Phrack_Middleware extends Phrack_Component
         return $self->toApp();
     }
 
-    protected function responseCb(&$res, $cb)
+    protected function responseCb(&$res, $cb, array $args = array())
     {
-        return Phrack_Util::responseCb($res, $cb);
+        return Phrack_Util::responseCb($res, $cb, $args);
     }
 }

@@ -3,6 +3,16 @@ require_once('Phrack/HTTP/Status.php');
 
 class Phrack_Util
 {
+    static public function loadClass($class)
+    {
+        $elements = explode('_', $class);
+        if (!class_exists($class, false)) {
+            $file = implode('/', $elements) . '.php';
+            require($file);
+        }
+        return $class;
+    }
+
     static public function statusText($status)
     {
         return $status . ' ' . Phrack_HTTP_Status::statusMessage($status);

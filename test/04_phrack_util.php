@@ -123,4 +123,13 @@ function testHeaderRemove($t)
 }
 $t->append('testHeaderRemove');
 
+function testLoadClass($t)
+{
+    $t->ok(!class_exists('Phrack_Component', false));
+
+    $class = Phrack_Util::loadClass('Phrack_Component');
+    $t->ok(class_exists('Phrack_Component', false));
+}
+$t->append('testLoadClass');
+
 $t->execute();
