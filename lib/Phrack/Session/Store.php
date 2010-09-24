@@ -7,9 +7,9 @@ class Phrack_Session_Store
 {
     protected $stash;
 
-    public function __construct()
+    public function __construct(array $stash = array())
     {
-        $this->stash = array();
+        $this->stash =& $stash;
     }
 
     public function fetch($sessionId)

@@ -15,13 +15,11 @@ abstract class Phrack_Session_State
         $this->options =& $options;
     }
 
-    abstract public function expireSessionId($id, &$res, &$options);
-
-    abstract public function getSessionId(&$environ);
-
     abstract public function extract(&$environ);
 
     abstract public function generate(&$environ);
+
+    abstract public function expireSessionId($id, &$res, &$options);
 
     abstract public function finalize($id, &$res, &$options);
 }

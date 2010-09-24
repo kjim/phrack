@@ -24,12 +24,6 @@ class Phrack_Session_State_Native extends Phrack_Session_State
         ), $options);
 
         session_name($this->options['session_name']);
-        $this->start();
-    }
-
-    protected function start()
-    {
-        self::$sessionStarted = true;
 
         session_set_cookie_params(
             $this->options['session_cookie_lifetime'],
@@ -48,29 +42,43 @@ class Phrack_Session_State_Native extends Phrack_Session_State
             $this->options['session_id'] != session_id()) {
             session_id($this->options['session_id']);
         }
+    }
 
+    protected function start()
+    {
+        if (self::$sessionStarted) {
+            return;
+        }
+
+        self::$sessionStarted = true;
         session_start();
     }
 
-    public function getSessionId(&$environ)
+    protected function getSessionId(&$environ)
     {
         return session_id();
     }
 
     public function extract(&$environ)
     {
+        $this->start();
         return $this->getSessionId($environ);
     }
 
     public function generate(&$environ)
     {
+        $this->start();
         session_regenerate_id(true);
         return session_id();
     }
 
     public function expireSessionId($id, &$res, &$options)
-    { }
+    {
+        $this->start();
+    }
 
     public function finalize($id, &$res, &$options)
-    { }
+    {
+        $this->start();
+    }
 }
