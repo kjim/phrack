@@ -15,8 +15,13 @@ function testMiddlewareImplementation($t)
 
     class FooMiddleware extends Phrack_Middleware
     {
+        protected $foo;
+
         public function call(&$environ)
         {
+            if ($this->foo !== 'bar') {
+                throw new Exception('property is not set');
+            }
             $environ['phsgix.foo'] = 'foo';
             $res = Phrack_Util::callApp($this->app, $environ);
             return $res;
@@ -32,7 +37,7 @@ function testMiddlewareImplementation($t)
         }
     }
 
-    $app = FooMiddleware::wrap('app');
+    $app = FooMiddleware::wrap('app', array('foo' => 'bar'));
 
     $environ = array('FOO' => 'bar', 'BAR' => 'baz');
     list($status, $headers, $body) = Phrack_Util::callApp($app, $environ);

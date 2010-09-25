@@ -6,6 +6,8 @@ require_once('Phrack/MIME.php');
 
 class Phrack_Middleware_ErrorDocument extends Phrack_Middleware
 {
+    protected $subrequest;
+
     public function call(&$environ)
     {
         $res = $this->callApp($environ);
@@ -20,7 +22,7 @@ class Phrack_Middleware_ErrorDocument extends Phrack_Middleware
         }
 
         $path = $this->args[$status];
-        if (isset($this->args['subrequest']) && $this->args['subrequest']) {
+        if ($this->subrequest) {
             foreach (array_keys($environ) as $k) {
                 if (strpos($k, 'phsgi') !== 0) {
                     $environ['phsgi.errordocument.' . $k] = $environ[$k];

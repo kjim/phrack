@@ -5,6 +5,9 @@ class Phrack_Middleware_SimpleLogger extends Phrack_Middleware
 {
     static public $LEVEL_NUMBERS;
 
+    protected $level;
+    
+
     static public function _classinit()
     {
         $levelNumbers = array();
@@ -17,7 +20,7 @@ class Phrack_Middleware_SimpleLogger extends Phrack_Middleware
 
     public function call(&$environ)
     {
-        $level = isset($this->args['level']) ? $this->args['level'] : 'debug';
+        $level = $this->level ? $this->level : 'debug';
         $min = isset(self::$LEVEL_NUMBERS[$level]) ? self::$LEVEL_NUMBERS[$level] : self::$LEVEL_NUMBERS['debug'];
 
         $environ['phsgix.logger'] = new Phrack_Middleware_SimpleLogger_Logger($environ['phsgi.errors'], $min);

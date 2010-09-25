@@ -8,6 +8,10 @@ abstract class Phrack_Component
 
     public function __construct($app, array $args = array())
     {
+        foreach ($args as $attr => $value) {
+            $this->$attr = $value;
+        }
+
         $this->app = $app;
         $this->args =& $args;
     }

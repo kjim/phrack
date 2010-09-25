@@ -14,8 +14,8 @@ class Phrack_Middleware_Session extends Phrack_Middleware
 
     protected function prepareApp()
     {
-        $this->state = $this->inflateBackend('Phrack_Session_State', $this->args['state']);
-        $this->store = $this->inflateBackend('Phrack_Session_Store', $this->args['store']);
+        $this->state = $this->inflateBackend('Phrack_Session_State', $this->state);
+        $this->store = $this->inflateBackend('Phrack_Session_Store', $this->store);
     }
 
     protected function inflateBackend($prefix, $backend)

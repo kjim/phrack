@@ -8,17 +8,19 @@ class Phrack_Middleware_Auth_Basic extends Phrack_Middleware
 
     protected function prepareApp()
     {
-        if (!isset($this->args['authenticator'])) {
+        if (!$this->authenticator) {
             throw new Exception("authenticator is not set");
         }
 
-        $authenticator = $this->args['authenticator'];
+        $authenticator = $this->authenticator;
+        if (is_object($authenticator) && method_exists($authenticator, 'authenticate')) {
+            $authenticator = array($authenticator, 'authenticate');
+        }
         if (!is_callable($authenticator)) {
             throw new Exception("authenticator should be a callable object or an object that respond to authenticate()");
         }
 
         $this->authenticator = $authenticator;
-        $this->realm = isset($this->args['realm']) ? $this->args['realm'] : null;
     }
 
     public function call(&$environ)

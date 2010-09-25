@@ -3,12 +3,14 @@ require_once('Phrack/Middleware.php');
 
 class Phrack_Middleware_MethodOverride extends Phrack_Middleware
 {
+    protected $header;
+
     static protected $ALLOWED_METHOD = array(
         'GET' => 1, 'HEAD' => 1, 'POST' => 1, 'PUT' => 1, 'DELETE' => 1);
 
     public function call(&$environ)
     {
-        $key = isset($this->args['header']) ? $this->args['header'] : 'X-HTTP-Method-Override';
+        $key = $this->header ? $this->header : 'X-HTTP-Method-Override';
         $key = strtr($key, '-', '_');
 
         $key = 'HTTP_' . strtoupper($key);
