@@ -62,7 +62,7 @@ class Phrack_Middleware_Session extends Phrack_Middleware
             return array(false, false);
         }
 
-        $session = $this->store->fetch($id);
+        $session =& $this->store->fetch($id);
         return array($id, &$session);
     }
 
@@ -80,6 +80,7 @@ class Phrack_Middleware_Session extends Phrack_Middleware
         else {
             $this->store->store($options['id'], $environ['phsgix.session']);
         }
+        $this->store->commit();
     }
 
     protected function finalize(&$environ, &$res)

@@ -26,4 +26,9 @@ class Phrack_Session_Store
     {
         unset($this->stash[$sessionId]);
     }
+
+    public function commit()
+    {
+        // NOP
+    }
 }

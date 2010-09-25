@@ -1,5 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/lib/bootstrap.php');
+require_once(dirname(__FILE__).'/lib/apps.php');
+
 require_once('Phrack/Middleware/Session.php');
 require_once('Phrack/Session/State/Native.php');
 require_once('Phrack/Session/Store/Native.php');
@@ -8,40 +10,15 @@ require_once('Phrack/Util.php');
 
 $t = new LimeTester();
 
-function setGreeting(&$environ)
-{
-    $session =& $environ['phsgix.session'];
-    $session['greeting_to'] = 'Foo';
-    return array('200 OK', array(), array());
-}
-
-function greeting(&$environ)
-{
-    $session =& $environ['phsgix.session'];
-    return array('200 OK', array(), array('Hello ', $session['greeting_to']));
-}
-
-function appExpireSession(&$environ)
-{
-    $environ['phsgix.session.options']['expire'] = true;
-    return array('200 OK', array(), array());
-}
-
-function appGetSessionKeys(&$environ)
-{
-    $session =& $environ['phsgix.session'];
-    return array('200 OK', array(), array_keys($session));
-}
-
 function testNativeSessionOnPHP($t)
 {
     $environ = array();
-    $app = 'setGreeting';
+    $app = 'appSetGreeting';
     $app = Phrack_Middleware_Session::wrap($app);
     $_ = Phrack_Util::callApp($app, $environ);
 
     $environ = array();
-    $app = 'greeting';
+    $app = 'appGreeting';
     $app = Phrack_Middleware_Session::wrap($app);
     list($_, $_, $body) = Phrack_Util::callApp($app, $environ);
     $t->is_deeply($body, array('Hello ', 'Foo'));

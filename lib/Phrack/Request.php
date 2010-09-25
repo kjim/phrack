@@ -113,6 +113,16 @@ class Phrack_Request
         return $this->environ['phrack.request.merged'];
     }
 
+    public function param($key)
+    {
+        return $this->getParameters()->get($key);
+    }
+
+    public function paramAll($key)
+    {
+        return $this->getParameters()->getAll($key);
+    }
+
     public function getUploads()
     {
         if (!isset($environ['phrack.request.upload'])) {

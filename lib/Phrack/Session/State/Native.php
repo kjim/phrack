@@ -68,7 +68,6 @@ class Phrack_Session_State_Native extends Phrack_Session_State
     public function generate(&$environ)
     {
         $this->start();
-        session_regenerate_id(true);
         return session_id();
     }
 

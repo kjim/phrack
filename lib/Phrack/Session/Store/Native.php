@@ -15,11 +15,15 @@ class Phrack_Session_Store_Native extends Phrack_Session_Store
 
     public function store($sessionId, &$session)
     {
-        $_SESSION =& $session;
+        $_SESSION = $session;
     }
 
     public function remove($sessionId)
     {
         $_SESSION = array();
+    }
+
+    public function commit()
+    {
     }
 }
