@@ -9,7 +9,7 @@ class Phrack_Response
     protected $body;
     protected $cookies;
 
-    public function __construct($status = 200, array $headers = array(), $content = array())
+    public function __construct($status = 200, array $headers = array(), $content = '')
     {
         $this->setStatus($status);
         $this->setHeaders($headers);
