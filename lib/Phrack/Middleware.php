@@ -4,6 +4,14 @@ require_once('Phrack/Util.php');
 
 abstract class Phrack_Middleware extends Phrack_Component
 {
+    protected $app;
+
+    public function __construct($app, array $args = array())
+    {
+        $this->app = $app;
+        parent::__construct($args);
+    }
+
     static protected function wrap(/* $class, array $args... */)
     {
         list($class, $args) = func_get_args();
@@ -16,6 +24,11 @@ abstract class Phrack_Middleware extends Phrack_Component
             $self = new $class($app);
         }
         return $self->toApp();
+    }
+
+    protected function callApp(&$environ)
+    {
+        return Phrack_Util::callApp($this->app, $environ);
     }
 
     protected function responseCb(&$res, $cb, array $args = array())

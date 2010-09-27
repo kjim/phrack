@@ -35,13 +35,15 @@ function testRedirect($t)
     $t->is($res->getStatus(), 302);
 
     $t->is_deeply($res->finalize(), array('302 Found',
-                                          array(array('Location', 'http://www.google.com/')), array()));
+                                          array(array('Location', 'http://www.google.com/')),
+                                          array()));
 
 
     $res = new Phrack_Response();
     $res->redirect('http://www.google.com/', 301);
     $t->is_deeply($res->finalize(), array('301 Moved Permanently',
-                                          array(array('Location', 'http://www.google.com/')), array()));
+                                          array(array('Location', 'http://www.google.com/')),
+                                          array()));
 }
 $t->append('testRedirect');
 

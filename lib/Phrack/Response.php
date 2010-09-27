@@ -119,8 +119,14 @@ class Phrack_Response
 
     protected function _body()
     {
-        if (is_scalar($this->body) || (is_object($this->body) && method_exists($this->body, '__toString'))) {
-            return array($this->body);
+        if (is_scalar($this->body) ||
+            is_object($this->body) && method_exists($this->body, '__toString')) {
+            if ($this->body === '') {
+                return array();
+            }
+            else {
+                return array($this->body);
+            }
         }
         else {
             return $this->body;
