@@ -25,7 +25,7 @@ class Phrack_Handler_Apache2 implements Phrack_Handler
             array(
                 'phsgi.version'        => array(1, 0),
                 'phsgi.url_scheme'     => (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 'https' : 'http'),
-                'phsgi.input'          => fopen('php://stdin', 'r'),
+                'phsgi.input'          => fopen('php://input', 'r'),
                 'phsgi.errors'         => fopen('php://stderr', 'w'),
                 'phsgi.multithread'    => false,
                 'phsgi.multiprocess'   => true,
