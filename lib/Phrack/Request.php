@@ -33,6 +33,11 @@ class Phrack_Request
         return isset($this->headers[$key]) ? $this->headers[$key] : $default;
     }
 
+    public function getServerName() { return $this->getenv('SERVER_NAME'); }
+    public function getServerAddr() { return $this->getenv('SERVER_ADDR'); }
+    public function getServerPort() { return $this->getenv('SERVER_PORT'); }
+    public function getHost()       { return $this->getheader('HTTP_HOST'); }
+
     public function getAddress()    { return $this->getenv('REMOTE_ADDR'); }
     public function getRemoteHost() { return $this->getenv('REMOTE_HOST'); }
     public function getProtocol()   { return $this->getenv('SERVER_PROTOCOL'); }
