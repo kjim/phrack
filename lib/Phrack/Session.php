@@ -16,9 +16,9 @@ class Phrack_Session
         return $this->options['id'];
     }
 
-    public function get($key)
+    public function get($key, $default = null)
     {
-        return $this->session[$key];
+        return array_key_exists($key, $this->session) ? $this->session[$key] : $default;
     }
 
     public function set($key, $value)
