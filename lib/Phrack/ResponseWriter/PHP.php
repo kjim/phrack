@@ -14,7 +14,7 @@ class Phrack_ResponseWriter_PHP extends Phrack_ResponseWriter
         $this->output = $fh;
     }
 
-    public function writeHeader($string, $replace = true)
+    public function writeHeader($string, $replace = false)
     {
         header($string, $replace);
     }
