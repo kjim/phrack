@@ -1,0 +1,19 @@
+NAME
+    Phrack - PHSGI implementation and toolkit
+
+DESCRIPTION
+    Phrack is a set of tools for using the PHSGI stack. It contains middleware
+    components, a reference server and utilities for Web application
+    frameworks. Phrack concept is like Python's Paste for WSGI or Perl's Plack.
+
+AUTHOR
+    Keiji Muraishi
+
+COPYRIGHT
+    The following copyright notice applies to all the files provided in this
+    distribution, including binary files, unless explicitly noted otherwise.
+
+    Copyright 2010-2011 Keiji Muraishi
+
+LICENSE
+    See LICENSE in this project.
