@@ -69,7 +69,7 @@ function testBody($t)
     {
         private $s;
         public function __construct($s) { $this->s = $s; }
-        public function __toString($s) { return $this->s; }
+        public function __toString() { return $this->s; }
     }
 
     $object = new StringifiedObject('Hello World');
