@@ -47,7 +47,7 @@ class Phrack_Util
 
     static public function callApp($app, &$env)
     {
-        return call_user_func($app, &$env);
+        return call_user_func_array($app, array(&$env));
     }
 
     static public function headers(&$headers)
@@ -57,8 +57,8 @@ class Phrack_Util
 
     static public function headerIter(&$headers, $callback)
     {
-        foreach ($headers as $header) {
-            call_user_func($callback, $header[0], $header[1]);
+        foreach ($headers as &$header) {
+            call_user_func_array($callback, $header);
         }
     }
 
@@ -142,7 +142,7 @@ class Phrack_Util
 
     static private function _responseCbBodyFilter($cb, &$res, &$args)
     {
-        call_user_func($cb, &$res, &$args);
+        call_user_func_array($cb, array(&$res, &$args));
     }
 
     /* The following methods are derived from code of the Symfony2 (preview3) */

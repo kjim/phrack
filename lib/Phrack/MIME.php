@@ -183,7 +183,7 @@ class Phrack_MIME
     static public function fallback($ext)
     {
         if (is_callable(self::$fallback)) {
-            call_user_func(self::$fallback, $ext);
+            call_user_func_array(self::$fallback, array($ext));
         }
         return;
     }

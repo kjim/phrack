@@ -65,7 +65,7 @@ class Phrack_Util_MultiDict implements ArrayAccess
     {
         $callback = array($this, 'addAll');
         foreach ($dict as $key => $value) {
-            call_user_func($callback, $key, (is_array($value) ? $value : array($value)));
+            call_user_func_array($callback, array($key, is_array($value) ? $value : array($value)));
         }
     }
 
