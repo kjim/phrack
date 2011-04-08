@@ -12,7 +12,7 @@ abstract class Phrack_Session_State
             $options);
 
         $this->sessionName = $options['session_name'];
-        $this->options =& $options;
+        $this->options = $options;
     }
 
     abstract public function extract(&$environ);
