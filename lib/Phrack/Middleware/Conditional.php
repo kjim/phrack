@@ -21,7 +21,7 @@ class Phrack_Middleware_Conditional extends Phrack_Middleware
 
     static public function wrap()
     {
-        $args =& func_get_args();
+        $args = func_get_args();
         return parent::wrap(__CLASS__, $args);
     }
 }

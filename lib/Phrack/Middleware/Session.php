@@ -62,7 +62,7 @@ class Phrack_Middleware_Session extends Phrack_Middleware
             return array(false, false);
         }
 
-        $session =& $this->store->fetch($id);
+        $session = $this->store->fetch($id);
         return array($id, &$session);
     }
 
@@ -111,7 +111,7 @@ class Phrack_Middleware_Session extends Phrack_Middleware
 
     static public function wrap()
     {
-        $args =& func_get_args();
+        $args = func_get_args();
         return parent::wrap(__CLASS__, $args);
     }
 }

@@ -43,7 +43,7 @@ function testPhsgiApplicationExample($t)
 
     $app = 'app';
 
-    $env =& makeMockEnv();
+    $env = makeMockEnv();
     list($status, $headers, $body) = call_user_func_array($app, array(&$env));
     $t->ok(true, 'phsgi application is callable object');
     $t->is($status, '200 OK', 'status is 200 OK');

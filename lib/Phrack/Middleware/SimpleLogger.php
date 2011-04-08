@@ -29,7 +29,7 @@ class Phrack_Middleware_SimpleLogger extends Phrack_Middleware
 
     static public function wrap()
     {
-        $args =& func_get_args();
+        $args = func_get_args();
         return parent::wrap(__CLASS__, $args);
     }
 }
@@ -95,8 +95,8 @@ class Phrack_Middleware_SimpleLogger_Logger
 
     static protected function formatTime($format, $time)
     {
-        $oldlocale = setlocale(LC_ALL, null);
-        setlocale(LC_ALL, 'en');
+        $oldlocale = setlocale(LC_ALL, 0);
+        setlocale(LC_ALL, 'en_US');
         $out = strftime($format, $time);
         setlocale(LC_ALL, $oldlocale);
         return $out;

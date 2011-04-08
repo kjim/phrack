@@ -11,7 +11,7 @@ class Phrack_Request
     public function __construct(&$environ)
     {
         $this->environ =& $environ;
-        $this->headers =& $this->getHeaders();
+        $this->getHeaders();
         $this->initialize();
     }
 

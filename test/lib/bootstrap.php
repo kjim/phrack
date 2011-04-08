@@ -1,6 +1,9 @@
 <?php
 require_once(dirname(__FILE__).'/lime.php');
 
+error_reporting(-1);
+date_default_timezone_set('UTC');
+
 function appendIncludePath($path)
 {
     set_include_path(get_include_path() . PATH_SEPARATOR . $path);

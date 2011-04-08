@@ -45,7 +45,7 @@ class Phrack_Response
 
     public function setCookie($name, array $attributes)
     {
-        $this->cookies[$name] =& $attributes;
+        $this->cookies[$name] = $attributes;
     }
 
     public function getCookies()

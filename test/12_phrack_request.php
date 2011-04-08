@@ -55,17 +55,17 @@ function testConvertFileInformation($t)
 
     $environ = array();
     $req = new Phrack_Request($environ);
-    $uploads =& $req->convertFileInformation($files);
+    $uploads = $req->convertFileInformation($files);
 
     $foo = $uploads['foo'];
-    $t->ok(is_a($foo, 'Phrack_Request_Upload'));
+    $t->ok($foo instanceof Phrack_Request_Upload);
     $t->is($foo->getFileName(), 'foo.txt');
     $t->is($foo->getSize(), 123);
     $t->is($foo->getTempName(), '/tmp/php/php1h4j1o');
     $t->is($foo->getPath(), $foo->getTempName());
 
     $bar = $uploads['bar'];
-    $t->ok(is_a($bar, 'Phrack_Request_Upload'));
+    $t->ok($bar instanceof Phrack_Request_Upload);
 }
 $t->append('testConvertFileInformation');
 
@@ -83,7 +83,7 @@ function testConvertFileInformationWithHashArraySyntax($t)
 
     $environ = array();
     $req = new Phrack_Request($environ);
-    $uploads =& $req->convertFileInformation($files);
+    $uploads = $req->convertFileInformation($files);
 
     $uploadFiles = $uploads['upload_files'];
     $t->is(count($uploadFiles), 2);

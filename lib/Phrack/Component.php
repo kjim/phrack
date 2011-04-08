@@ -10,7 +10,7 @@ abstract class Phrack_Component
             $this->$attr = $value;
         }
 
-        $this->args =& $args;
+        $this->args = $args;
     }
 
     abstract public function call(&$environ);
