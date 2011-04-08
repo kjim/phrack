@@ -31,7 +31,7 @@ class Phrack_Middleware_Auth_Basic extends Phrack_Middleware
 
         $user = $environ['PHP_AUTH_USER'];
         $pass = $environ['PHP_AUTH_PW'];
-        if (call_user_func_array($this->authenticator, array($user, $pass))) {
+        if (call_user_func($this->authenticator, $user, $pass)) {
             $environ['REMOTE_USER'] = $user;
             return $this->callApp($environ);
         }

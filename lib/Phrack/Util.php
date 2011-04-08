@@ -57,8 +57,8 @@ class Phrack_Util
 
     static public function headerIter(&$headers, $callback)
     {
-        foreach ($headers as &$header) {
-            call_user_func_array($callback, $header);
+        foreach ($headers as $header) {
+            call_user_func($callback, $header[0], $header[1]);
         }
     }
 
@@ -206,7 +206,7 @@ class Phrack_Util_Prototype
     public function __call($attr, $args)
     {
         if (isset($this->callbacks[$attr]) && is_callable($this->callbacks[$attr])) {
-            call_user_func_array($this->callbacks[$attr], $args);
+            call_user_func($this->callbacks[$attr], $args);
         }
         else {
             throw new Exception(
