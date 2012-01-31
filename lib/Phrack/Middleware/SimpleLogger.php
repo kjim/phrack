@@ -108,7 +108,7 @@ class Phrack_Middleware_SimpleLogger_Logger
         $level = strtoupper($level);
         return sprintf("[%s #%d] %s: %s\n",
                        $time,
-                       posix_getpid(),
+                       getmypid(),
                        $level,
                        $message);
     }
